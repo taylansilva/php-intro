@@ -1,5 +1,7 @@
 <?php 
 
+session_start();
+
 $categorias = [];
 $categorias[] = 'infantil';
 $categorias[] = 'adolescente';
@@ -16,29 +18,26 @@ $idade = $_POST['idade']; //verificar a tag method do input
 
 if(empty($nome))
 {
-    echo 'O nome não pode ser vazio';
+    $_SESSION['mensagem-de-erro'] = 'O nome não pode ser vazio';
+    header('location: index.php');
     return;
 }
-
-if(strlen($nome) < 3) 
+else if(strlen($nome) < 3) 
 {
-    echo 'O nome deve conter mais que 3 caracteres';
+    $_SESSION['mensagem-de-erro'] = 'O nome deve conter mais que 3 caracteres';
+    header('location: index.php');
     return;
 }
-
-if(strlen($nome) > 40)
+else if(strlen($nome) > 40)
 {
-    echo 'O nome deve conter menos de 40 caracteres';
+    $_SESSION['mensagem-de-erro'] = 'O nome deve conter menos de 40 caracteres';
+    header('location: index.php');
     return;
 }
-
-/*
- * VALIDAÇÃO DA IDADE -------------------------------------- 
- */
-
-if(!is_numeric($idade))
+else if(!is_numeric($idade))
 {
-    echo 'Informe um numero para idade';
+    $_SESSION['mensagem-de-erro'] = 'Informe um numero para idade';
+    header('location: index.php');
     return;
 }
  
@@ -46,38 +45,57 @@ if(!is_numeric($idade))
  * REGRAS DE NEGOCIO -------------------------------------- 
  */
 
-if($idade >= 6 && $idade <= 12 ) 
+if($idade >= 6 && $idade <= 12) 
 {
-    for($i = 0; $i < count($categorias); $i++) 
+    for($i = 0; $i <= count($categorias); $i++) 
     {
         if($categorias[$i] == 'infantil') 
-            echo "O nadador ".$nome. " compete na categoria " . $categorias[$i];
+        {
+            $_SESSION['mensagem-de-sucesso'] = "O nadador ".$nome. " compete na categoria " . $categorias[$i];
+            header('location: index.php');
+            return;
+        }
+            
     }
 } 
 else if($idade >= 13 && $idade <= 18) 
 {
-    for($i = 0; $i < count($categorias); $i++) 
+    for($i = 0; $i <= count($categorias); $i++) 
     {
         if($categorias[$i] == 'adolescente')
-            echo "O nadador ".$nome. " compete na categoria " . $categorias[$i];
+        {
+            $_SESSION['mensagem-de-sucesso'] = "O nadador ".$nome. " compete na categoria " . $categorias[$i];
+            header('location: index.php');
+            return;
+        }
+            
     }
 } 
 else if($idade >= 19 && $idade <= 65)
 {
-    for($i = 0; $i < count($categorias); $i++) 
+    for($i = 0; $i <= count($categorias); $i++) 
     {
         if($categorias[$i] == 'adulto')
-            echo "O nadador ".$nome. " compete na categoria " . $categorias[$i];
+        {
+            $_SESSION['mensagem-de-sucesso'] = "O nadador ".$nome. " compete na categoria " . $categorias[$i];
+            header('location: index.php');
+            return;
+        }
     }
 }
 else if($idade >= 66 && $idade <= 80)
 {
-    for($i = 0; $i < count($categorias); $i++) 
+    for($i = 0; $i <= count($categorias); $i++) 
     {
         if($categorias[$i] == 'idoso')
-            echo "O nadador ".$nome. " compete na categoria " . $categorias[$i];
+        {
+            $_SESSION['mensagem-de-sucesso'] = "O nadador ".$nome. " compete na categoria " . $categorias[$i];
+            header('location: index.php');
+            return;
+        }
     }
-} else 
+} 
+else 
 {
     echo "Desculpe nadador ".$nome. " você não pode competir";
 }
